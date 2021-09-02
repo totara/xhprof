@@ -107,9 +107,19 @@ function xhprof_generate_image_by_dot($dot_script, $type) {
        2 => array("pipe", "w")
        );
 
-  $cmd = " dot -T".$type;
+  // Start moodle modification: use $CFG->pathtodot for executing this.
+  global $CFG;
+  // TOTARA: our own modifications start here and continue to the end of this function.
+  //
+  if (empty($CFG->pathtodot)) {
+      print "Cannot continue. Dot not enabled on site.";
+      exit;
+  }
+  $dotcommand = new \core\command\executable($CFG->pathtodot);
+  $dotcommand->add_argument('-T', $type, PARAM_ALPHA, '');
 
-  $process = proc_open( $cmd, $descriptorspec, $pipes, sys_get_temp_dir(), array( 'PATH' => getenv( 'PATH' ) ) );
+  $process = $dotcommand->proc_open($descriptorspec, $pipes, sys_get_temp_dir(), array( 'PATH' => getenv( 'PATH' ) ) );
+
   if (is_resource($process)) {
     fwrite($pipes[0], $dot_script);
     fclose($pipes[0]);
@@ -118,7 +128,7 @@ function xhprof_generate_image_by_dot($dot_script, $type) {
 
     $err = stream_get_contents($pipes[2]);
     if (!empty($err)) {
-      print "failed to execute cmd: \"$cmd\". stderr: `$err'\n";
+      print "failed to execute dot command. stderr: '{$err}'\n";
       exit;
     }
 
@@ -127,7 +137,8 @@ function xhprof_generate_image_by_dot($dot_script, $type) {
     proc_close($process);
     return $output;
   }
-  print "failed to execute cmd \"$cmd\"";
+  print "failed to execute dot command.";
+
   exit();
 }
 
