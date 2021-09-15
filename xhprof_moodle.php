@@ -23,12 +23,10 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-// Need some stuff from xhprof.
-require_once($CFG->libdir . '/xhprof/xhprof_lib/utils/xhprof_lib.php');
-require_once($CFG->libdir . '/xhprof/xhprof_lib/utils/xhprof_runs.php');
+global $CFG;
+
 // Need some stuff from moodle.
 require_once($CFG->libdir . '/tablelib.php');
-require_once($CFG->libdir . '/setuplib.php');
 require_once($CFG->libdir . '/filelib.php');
 require_once($CFG->libdir . '/testing/classes/util.php');
 require_once($CFG->dirroot . '/backup/util/xml/xml_writer.class.php');
