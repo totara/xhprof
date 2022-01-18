@@ -215,7 +215,7 @@ function profiling_stop() {
         return false;
     }
 
-    $run = new moodle_xhprofrun();
+    $run = new xhprof_totara_run();
     $run->prepare_run($script);
     $runid = $run->save_run($data, null);
     profiling_is_saved(true);
@@ -812,7 +812,7 @@ EOS;
  * save_run() we'll be implementing some more in order to keep all the
  * rest of information in our runs properly handled.
  */
-class moodle_xhprofrun implements iXHProfRuns {
+class xhprof_totara_run implements iXHProfRuns {
 
     protected $runid = null;
     protected $url = null;
