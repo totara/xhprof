@@ -31,14 +31,13 @@
 //             Changhao Jiang
 //
 
-// Start moodle modification: moodleize this script.
-require_once(dirname(dirname(dirname(dirname(__FILE__)))).'/config.php');
-require_once($CFG->libdir . '/xhprof/xhprof_moodle.php');
+// Totara: Start modification
+require_once(__DIR__.'/../../../../../server/config.php');
 require_login();
 require_capability('moodle/site:config', context_system::instance());
 raise_memory_limit(MEMORY_HUGE);
 \core\session\manager::write_close();
-// End moodle modification.
+// End modification.
 
 // by default assume that xhprof_html & xhprof_lib directories
 // are at the same level.
@@ -89,10 +88,10 @@ $vbbar = ' class="vbbar"';
 $vrbar = ' class="vrbar"';
 $vgbar = ' class="vgbar"';
 
-// Start moodle modification: use own XHProfRuns implementation.
+// Totara: use own XHProfRuns implementation.
 // $xhprof_runs_impl = new XHProfRuns_Default();
-$xhprof_runs_impl = new moodle_xhprofrun();
-// End moodle modification.
+$xhprof_runs_impl = new xhprof_totara_run();
+// End modification.
 
 displayXHProfReport($xhprof_runs_impl, $params, $source, $run, $wts,
                     $symbol, $sort, $run1, $run2);
