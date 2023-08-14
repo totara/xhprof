@@ -1346,7 +1346,8 @@ zend_string *hp_trace_callback_sql_query(zend_string *function_name, zend_execut
 
 zend_string *hp_trace_callback_pdo_statement_execute(zend_string *symbol, zend_execute_data *data)
 {
-    zend_string *result, *pattern;
+    zend_string *result = NULL;
+    zend_string *pattern = NULL;
     zend_class_entry *pdo_ce;
     zval *object = (data->This.value.obj) ? &(data->This) : NULL;
     zval *query_string, *arg;
