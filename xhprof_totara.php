@@ -277,13 +277,13 @@ function profiling_urls($report, $runid, $runid2 = null) {
     $url = '';
     switch ($report) {
         case 'run':
-            $url = $CFG->wwwroot . '/lib/xhprof/xhprof_html/index.php?run=' . $runid;
+            $url = $CFG->wwwroot . '/admin/tool/profiling/xhprof_html/index.php?run=' . $runid;
             break;
         case 'diff':
-            $url = $CFG->wwwroot . '/lib/xhprof/xhprof_html/index.php?run1=' . $runid . '&amp;run2=' . $runid2;
+            $url = $CFG->wwwroot . '/admin/tool/profiling/xhprof_html/index.php?run1=' . $runid . '&amp;run2=' . $runid2;
             break;
         case 'graph':
-            $url = $CFG->wwwroot . '/lib/xhprof/xhprof_html/callgraph.php?run=' . $runid;
+            $url = $CFG->wwwroot . '/admin/tool/profiling/xhprof_html/callgraph.php?run=' . $runid;
             break;
     }
     return $url;
@@ -314,7 +314,6 @@ function profiling_print_run($run, $prevreferences = null) {
 
     $table = new html_table();
     $table->align = array('right', 'left');
-    $table->tablealign = 'center';
     $table->attributes['class'] = 'profilingruntable';
     $table->colclasses = array('label', 'value');
     $table->data = array(
