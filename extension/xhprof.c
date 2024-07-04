@@ -1290,7 +1290,11 @@ int hp_pcre_match(zend_string *pattern, const char *str, size_t len, zend_ulong 
 #else
         zend_string *tmp = zend_string_init(str, len, 0);
         php_pcre_match_impl(pce_regexp, tmp, &matches, &subparts /* subpats */,
-                            0/* global */, 0/* ZEND_NUM_ARGS() >= 4 */, 0/*flags PREG_OFFSET_CAPTURE*/, 0/* start_offset */);
+                            0/* global */,
+#if PHP_VERSION_ID < 80400
+                            0/* ZEND_NUM_ARGS() >= 4 */,
+#endif
+                            0/*flags PREG_OFFSET_CAPTURE*/, 0/* start_offset */);
         zend_string_release(tmp);
 #endif
 
