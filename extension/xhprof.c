@@ -425,7 +425,6 @@ hp_ignored_functions *hp_ignored_functions_init(zval *values)
 
     if (Z_TYPE_P(values) == IS_ARRAY) {
         HashTable *ht;
-        zend_ulong num_key;
         zend_string *key;
         zval *val;
 
@@ -434,7 +433,7 @@ hp_ignored_functions *hp_ignored_functions_init(zval *values)
 
         names = ecalloc(count + 1, sizeof(zend_string *));
 
-        ZEND_HASH_FOREACH_KEY_VAL(ht, num_key, key, val) {
+        ZEND_HASH_FOREACH_STR_KEY_VAL(ht, key, val) {
             if (!key) {
                 if (Z_TYPE_P(val) == IS_STRING && strcmp(Z_STRVAL_P(val), ROOT_SYMBOL) != 0) {
                     /* do not ignore "main" */
