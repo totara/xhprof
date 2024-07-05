@@ -1351,15 +1351,14 @@ zend_string *hp_trace_callback_pdo_statement_execute(zend_string *symbol, zend_e
 {
     zend_string *result = NULL;
     zend_string *pattern = NULL;
-    zend_class_entry *pdo_ce;
     zval *object = (data->This.value.obj) ? &(data->This) : NULL;
     zval *query_string, *arg;
 
     if (object != NULL) {
 #if PHP_VERSION_ID < 80000
-        query_string = zend_read_property(pdo_ce, object, "queryString", sizeof("queryString") - 1, 0, NULL);
+        query_string = zend_read_property(NULL, object, "queryString", sizeof("queryString") - 1, 0, NULL);
 #else
-        query_string = zend_read_property(pdo_ce, Z_OBJ_P(object), "queryString", sizeof("queryString") - 1, 0, NULL);
+        query_string = zend_read_property(NULL, Z_OBJ_P(object), "queryString", sizeof("queryString") - 1, 0, NULL);
 #endif
 
         if (query_string == NULL || Z_TYPE_P(query_string) != IS_STRING) {
