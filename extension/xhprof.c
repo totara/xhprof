@@ -393,7 +393,7 @@ void hp_ignored_functions_clear(hp_ignored_functions *functions)
     hp_array_del(functions->names);
     functions->names = NULL;
 
-    memset(functions->filter, 0, XHPROF_MAX_IGNORED_FUNCTIONS);
+    memset(functions->filter, 0, sizeof(functions->filter));
     efree(functions);
 }
 
@@ -457,7 +457,7 @@ hp_ignored_functions *hp_ignored_functions_init(zval *values)
     functions = emalloc(sizeof(hp_ignored_functions));
     functions->names = names;
 
-    memset(functions->filter, 0, XHPROF_MAX_IGNORED_FUNCTIONS);
+    memset(functions->filter, 0, sizeof(functions->filter));
 
     uint32_t i = 0;
     for (; names[i] != NULL; i++) {
