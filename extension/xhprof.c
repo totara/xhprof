@@ -1273,7 +1273,6 @@ static inline void hp_array_del(zend_string **names)
 
 int hp_pcre_match(zend_string *pattern, const char *str, size_t len, zend_ulong idx)
 {
-    zval *match;
     pcre_cache_entry *pce_regexp;
 
     if ((pce_regexp = pcre_get_compiled_regex_cache(pattern)) == NULL) {
