@@ -393,7 +393,7 @@ void hp_ignored_functions_clear(hp_ignored_functions *functions)
     hp_array_del(functions->names);
     functions->names = NULL;
 
-    memset(functions->filter, 0, XHPROF_MAX_IGNORED_FUNCTIONS);
+    memset(functions->filter, 0, sizeof(functions->filter));
     efree(functions);
 }
 
@@ -425,7 +425,6 @@ hp_ignored_functions *hp_ignored_functions_init(zval *values)
 
     if (Z_TYPE_P(values) == IS_ARRAY) {
         HashTable *ht;
-        zend_ulong num_key;
         zend_string *key;
         zval *val;
 
@@ -434,7 +433,7 @@ hp_ignored_functions *hp_ignored_functions_init(zval *values)
 
         names = ecalloc(count + 1, sizeof(zend_string *));
 
-        ZEND_HASH_FOREACH_KEY_VAL(ht, num_key, key, val) {
+        ZEND_HASH_FOREACH_STR_KEY_VAL(ht, key, val) {
             if (!key) {
                 if (Z_TYPE_P(val) == IS_STRING && strcmp(Z_STRVAL_P(val), ROOT_SYMBOL) != 0) {
                     /* do not ignore "main" */
@@ -457,7 +456,7 @@ hp_ignored_functions *hp_ignored_functions_init(zval *values)
     functions = emalloc(sizeof(hp_ignored_functions));
     functions->names = names;
 
-    memset(functions->filter, 0, XHPROF_MAX_IGNORED_FUNCTIONS);
+    memset(functions->filter, 0, sizeof(functions->filter));
 
     uint32_t i = 0;
     for (; names[i] != NULL; i++) {
@@ -1274,7 +1273,6 @@ static inline void hp_array_del(zend_string **names)
 
 int hp_pcre_match(zend_string *pattern, const char *str, size_t len, zend_ulong idx)
 {
-    zval *match;
     pcre_cache_entry *pce_regexp;
 
     if ((pce_regexp = pcre_get_compiled_regex_cache(pattern)) == NULL) {
@@ -1287,7 +1285,7 @@ int hp_pcre_match(zend_string *pattern, const char *str, size_t len, zend_ulong 
 #if PHP_VERSION_ID < 70400
         php_pcre_match_impl(pce_regexp, (char*)str, len, &matches, &subparts /* subpats */,
                         0/* global */, 0/* ZEND_NUM_ARGS() >= 4 */, 0/*flags PREG_OFFSET_CAPTURE*/, 0/* start_offset */);
-#else
+#elif PHP_VERSION_ID < 80400
         zend_string *tmp = zend_string_init(str, len, 0);
         php_pcre_match_impl(pce_regexp, tmp, &matches, &subparts /* subpats */,
                             0/* global */,
@@ -1295,6 +1293,11 @@ int hp_pcre_match(zend_string *pattern, const char *str, size_t len, zend_ulong 
                             0/* ZEND_NUM_ARGS() >= 4 */,
 #endif
                             0/*flags PREG_OFFSET_CAPTURE*/, 0/* start_offset */);
+        zend_string_release(tmp);
+#else
+        zend_string *tmp = zend_string_init(str, len, 0);
+        php_pcre_match_impl(pce_regexp, tmp, &matches, &subparts /* subpats */,
+                            false/* global */, 0/*flags PREG_OFFSET_CAPTURE*/, 0/* start_offset */);
         zend_string_release(tmp);
 #endif
 
@@ -1352,15 +1355,14 @@ zend_string *hp_trace_callback_pdo_statement_execute(zend_string *symbol, zend_e
 {
     zend_string *result = NULL;
     zend_string *pattern = NULL;
-    zend_class_entry *pdo_ce;
     zval *object = (data->This.value.obj) ? &(data->This) : NULL;
     zval *query_string, *arg;
 
     if (object != NULL) {
 #if PHP_VERSION_ID < 80000
-        query_string = zend_read_property(pdo_ce, object, "queryString", sizeof("queryString") - 1, 0, NULL);
+        query_string = zend_read_property(NULL, object, "queryString", sizeof("queryString") - 1, 0, NULL);
 #else
-        query_string = zend_read_property(pdo_ce, Z_OBJ_P(object), "queryString", sizeof("queryString") - 1, 0, NULL);
+        query_string = zend_read_property(NULL, Z_OBJ_P(object), "queryString", sizeof("queryString") - 1, 0, NULL);
 #endif
 
         if (query_string == NULL || Z_TYPE_P(query_string) != IS_STRING) {
