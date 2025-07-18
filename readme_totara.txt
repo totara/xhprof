@@ -1,4 +1,4 @@
-Description of XHProf 2.3.5 library/viewer import into Totara.
+Description of XHProf 2.3.10 library/viewer import into Totara.
 
 This project is a fork of https://github.com/longxinH/xhprof with our own additions to it.
 
@@ -18,3 +18,5 @@ Our changes:  Look for "moodle" in code (commit #3 - always mimic from current m
 20171002 - MDL-60313 - Marina Glancy (marinaglancy): Upgrade to 0.9.4 release; patched for PHP7.2
 20211109 - TL-28228 - moved to composer and upgraded to 2.3.4
 20220119 - TL-33463 - Upgraded to 2.3.5 and restored to original state (minimise changes)
+20240326 - TL-40007 - Upgraded to 2.3.9
+20250718 - TL-45520 - Upgraded to 2.3.10, undoing some 2.3.9 customisations (removed composer from TL-28228)
