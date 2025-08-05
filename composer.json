@@ -1,5 +1,5 @@
 {
-    "name": "longxinh/xhprof",
+    "name": "totara/xhprof",
     "type": "library",
     "description": "XHProf: A Hierarchical Profiler for PHP",
     "keywords": ["profiling", "performance"],
@@ -14,5 +14,8 @@
             "xhprof_lib/utils/xhprof_runs.php"
         ]
     },
-    "bin": ["bin/xhprofile"]
+    "bin": ["bin/xhprofile"],
+    "replaces": {
+        "longxinh/xhprof": "*"
+    }
 }
