@@ -17,6 +17,6 @@
     },
     "bin": ["bin/xhprofile"],
     "replaces": {
-        "longxinh/xhprof": "*"
+        "longxinh/xhprof": "^2.3"
     }
 }
