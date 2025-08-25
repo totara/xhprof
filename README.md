@@ -1,22 +1,17 @@
 # xhprof
 
-This is a fork specifically for Totara projects. The master branch should not be used, instead the named Totara versions should be used.
+This is a fork specifically for Totara projects.
 
 XHProf is a function-level hierarchical profiler for PHP and has a simple HTML based navigational interface. The raw data collection component is implemented in C (as a PHP extension). The reporting/UI layer is all in PHP. It is capable of reporting function-level inclusive and exclusive wall times, memory usage, CPU times and number of calls for each function. Additionally, it supports ability to compare two runs (hierarchical DIFF reports), or aggregate results from multiple runs.
 
-This version supports PHP7 and PHP8
+This version supports PHP8
 
 # PHP Version
-- 7.2
-- 7.3
-- 7.4
-- 8.0
-- 8.1
 - 8.2
 
 # Installation
 ```
-git clone https://github.com/longxinH/xhprof.git ./xhprof
+git clone https://github.com/totara/xhprof.git ./xhprof
 cd xhprof/extension/
 /path/to/php7/bin/phpize
 ./configure --with-php-config=/path/to/php7/bin/php-config
