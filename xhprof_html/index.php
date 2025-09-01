@@ -32,7 +32,7 @@
 //
 
 // Totara: Start modification
-require_once(__DIR__.'/../../../../../server/config.php');
+require_once(__DIR__.'/../../../../server/config.php');
 require_login();
 require_capability('moodle/site:config', context_system::instance());
 raise_memory_limit(MEMORY_HUGE);
